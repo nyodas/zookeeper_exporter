@@ -198,6 +198,12 @@ func sendZkCommand(fourLetterWord string) (string, bool) {
 		log.WithFields(log.Fields{"error": err}).Error("Error parsing response from Zookeeper")
 		return "", false
 	}
+
+	if buffer.String() == "This ZooKeeper instance is not currently serving requests\n" {
+		log.WithFields(log.Fields{"error": err}).Error(buffer.String())
+		return "", false
+	}
+
 	log.Debug("Successfully retrieved reply")
 
 	return buffer.String(), true
